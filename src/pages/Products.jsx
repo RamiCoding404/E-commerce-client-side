@@ -1,18 +1,17 @@
 import { Grid } from "@chakra-ui/react";
 import ProductCard from "../components/ProductCard";
-import axios from "axios";
+
 import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../components/ProductCardSkeleton";
 import { useSelector } from "react-redux";
 import { selectnetwork } from "../app/features/networkSlice";
+import { axiosInstance } from "../api/axiosconfig";
 const ProductsPage = () => {
   const { isOnline } = useSelector(selectnetwork);
   const getProductList = async ({ pageParam = 1 }) => {
     try {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
-        }/api/products?populate=thumbnail,category&pagination[pageSize]=3&pagination[page]=${pageParam}`
+      const { data } = await axiosInstance.get(
+        `/products?populate=thumbnail,category&pagination[pageSize]=3&pagination[page]=${pageParam}`
       );
       return data;
     } catch (error) {

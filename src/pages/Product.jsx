@@ -13,7 +13,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import imgFalBack from "../assets/img-placeholder.png";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../components/ProductCardSkeleton";
 import { BsArrowLeft } from "react-icons/bs";
@@ -22,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { addtoCart } from "../app/features/CartSlice";
 import { useSelector } from "react-redux";
 import { selectnetwork } from "../app/features/networkSlice";
+import { axiosInstance } from "../api/axiosconfig";
 
 const ProductPage = () => {
   const { isOnline } = useSelector(selectnetwork);
@@ -32,10 +32,8 @@ const ProductPage = () => {
 
   const getProductList = async () => {
     try {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_SERVER_URL
-        }/api/products/${id}?populate=thumbnail,category&fields=title&fields=price&fields=description`
+      const { data } = await axiosInstance.get(
+        `products/${id}?populate=thumbnail,category&fields=title&fields=price&fields=description`
       );
       return data;
     } catch (error) {

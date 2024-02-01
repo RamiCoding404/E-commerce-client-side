@@ -6,14 +6,14 @@ export const productsApiSlice = createApi({
   tagTypes: ["Products"],
   refetchOnReconnect: true,
   refetchOnMountOrArgChange: true,
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_SERVER_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:1337/api" }),
   endpoints: (build) => ({
     //Get
     getDashboardProducts: build.query({
       query: (arg) => {
         const { page } = arg;
         return {
-          url: `/api/products?populate=category,thumbnail&pagination[page]=${page}&pagination[pageSize]=7`,
+          url: `/products?populate=category,thumbnail&pagination[page]=${page}&pagination[pageSize]=7`,
         };
       },
       providesTags: (result) =>
@@ -28,7 +28,7 @@ export const productsApiSlice = createApi({
     deleteDashboardProducts: build.mutation({
       query: (id) => {
         return {
-          url: `/api/products/${id}`,
+          url: `/products/${id}`,
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${CookieService.get("jwt")}`,
@@ -40,7 +40,7 @@ export const productsApiSlice = createApi({
     //update
     updateDashboardProducts: build.mutation({
       query: ({ id, body }) => ({
-        url: `/api/products/${id}`,
+        url: `/products/${id}`,
         method: "PUT",
         headers: {
           Authorization: `Bearer ${CookieService.get("jwt")}`,
@@ -69,7 +69,7 @@ export const productsApiSlice = createApi({
     createDashboardProducts: build.mutation({
       query(body) {
         return {
-          url: `/api/products`,
+          url: `/products`,
           method: "POST",
           body,
           headers: {
@@ -83,7 +83,7 @@ export const productsApiSlice = createApi({
     //get Category
     getCategories: build.query({
       query: () => ({
-        url: `/api/categories`,
+        url: `/categories`,
       }),
       providesTags: ["Categories"],
     }),
