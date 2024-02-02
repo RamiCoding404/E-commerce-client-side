@@ -16,6 +16,13 @@ import {
   Center,
   Link,
   HStack,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  IconButton,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { BsMoon, BsSun } from "react-icons/bs";
@@ -24,10 +31,12 @@ import CookieService from "../services/CookieService";
 import { selectCart } from "../app/features/CartSlice";
 import { useDispatch } from "react-redux";
 import { onOpenCartDrawerAction } from "../app/features/globalSlice";
+import { useState } from "react";
+import { FiMenu } from "react-icons/fi";
 
 const Links = ["Products", "Dashboard"];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ children, onClick }) => (
   <Link
     as={RouterLink}
     px={2}
@@ -40,6 +49,7 @@ const NavLink = ({ children }) => (
     fontWeight={"500"}
     fontSize={"md"}
     to={children.toLowerCase()}
+    onClick={onClick}
   >
     {children}
   </Link>
@@ -59,6 +69,16 @@ export default function Navbar() {
     dispatch(onOpenCartDrawerAction());
   };
 
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <>
       <Box
@@ -69,8 +89,17 @@ export default function Navbar() {
         mb={16}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <IconButton
+            display={{ base: "flex", md: "none" }}
+            onClick={toggleMobileMenu}
+            variant="outline"
+            aria-label="open menu"
+          >
+            <FiMenu />
+          </IconButton>
+
           <HStack spacing={8} alignItems={"center"}>
-            <RouterLink to="/">ECO</RouterLink>
+            <RouterLink to="/">Home</RouterLink>
             <HStack
               as={"nav"}
               spacing={4}
@@ -82,7 +111,7 @@ export default function Navbar() {
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Stack direction={"row"} spacing={7}>
+            <Stack direction={"row"} spacing={3}>
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <BsMoon /> : <BsSun />}
               </Button>
@@ -96,20 +125,12 @@ export default function Navbar() {
                     cursor={"pointer"}
                     minW={0}
                   >
-                    <Avatar
-                      size={"sm"}
-                      src={"https://avatars.dicebear.com/api/male/username.svg"}
-                    />
+                    <Avatar size={"sm"} src={""} />
                   </MenuButton>
                   <MenuList alignItems={"center"}>
                     <br />
                     <Center>
-                      <Avatar
-                        size={"2xl"}
-                        src={
-                          "https://avatars.dicebear.com/api/male/username.svg"
-                        }
-                      />
+                      <Avatar size={"2xl"} src={""} />
                     </Center>
                     <br />
                     <Center>
@@ -137,6 +158,32 @@ export default function Navbar() {
           </Flex>
         </Flex>
       </Box>
+      {/* Mobile Drawer */}
+      <Drawer
+        isOpen={isMobileMenuOpen}
+        placement="left"
+        onClose={() => setMobileMenuOpen(false)}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Home</DrawerHeader>
+          <DrawerBody>
+            <Stack spacing={4}>
+              {Links.map((link) => (
+                <NavLink key={link} onClick={closeMobileMenu}>
+                  {link}
+                </NavLink>
+              ))}
+              {!token ? (
+                <NavLink as={RouterLink} to="/login">
+                  Login
+                </NavLink>
+              ) : null}
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }

@@ -3,28 +3,21 @@
 
 import {
   IconButton,
-  Avatar,
   Box,
   CloseButton,
   Flex,
   HStack,
-  VStack,
   Icon,
   useColorModeValue,
   Text,
   Drawer,
   DrawerContent,
   useDisclosure,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
   Link,
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import { FiMenu, FiBell, FiChevronDown, FiHome } from "react-icons/fi";
+import { FiMenu, FiBell, FiHome } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { HiOutlineViewColumns } from "react-icons/hi2";
@@ -45,7 +38,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
     <Box
       transition="3s ease"
       borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
@@ -58,7 +50,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} to={link.to}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          to={link.to}
+          onClick={onClose}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -126,14 +123,13 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
       <Text
         display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
+        fontSize="lg"
         fontFamily="monospace"
-        fontWeight="bold"
       >
-        Logo
+        Admin
       </Text>
 
-      <HStack spacing={{ base: "1", md: "2" }}>
+      <HStack spacing={3}>
         <IconButton
           size="lg"
           variant="ghost"
@@ -143,45 +139,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <BsMoon /> : <BsSun />}
         </Button>
-        <Flex alignItems={"center"}>
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: "none" }}
-            >
-              <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-                <VStack
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
-                </VStack>
-                <Box display={{ base: "none", md: "flex" }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
       </HStack>
     </Flex>
   );
@@ -202,7 +159,6 @@ const DashboardLayout = () => {
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full"
       >
         <DrawerContent>
           <SidebarContent onClose={onClose} />
