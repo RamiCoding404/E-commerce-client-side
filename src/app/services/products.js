@@ -6,7 +6,9 @@ export const productsApiSlice = createApi({
   tagTypes: ["Products"],
   refetchOnReconnect: true,
   refetchOnMountOrArgChange: true,
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:1337/api" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://rami-fullstack-reactjs-strapi-app.onrender.com/api",
+  }),
   endpoints: (build) => ({
     //Get
     getDashboardProducts: build.query({

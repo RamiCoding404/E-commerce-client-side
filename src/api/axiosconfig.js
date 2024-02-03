@@ -1,4 +1,4 @@
 import axios from "axios";
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:1337/api",
+  baseURL: "https://rami-fullstack-reactjs-strapi-app.onrender.com/api",
 });

@@ -380,7 +380,7 @@ const DashboardProductsTable = () => {
       <CustomModal
         isOpen={isCreateModalOpen}
         onClose={onCreateModalClose}
-        title={"Update Product"}
+        title={"Add Product"}
         okTxt="Upload"
         onOkClick={onSubmitCreateHandler}
         isLoading={isCreating}
